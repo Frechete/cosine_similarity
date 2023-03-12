@@ -24,17 +24,6 @@ double cosine_dist(
     return dist;
 }
 
-/*
- * Complete the 'cosine_similarity' function below.
- *
- * The function is expected to return a DOUBLE.
- * The function accepts following parameters:
- *  1. INTEGER_ARRAY a_keys
- *  2. DOUBLE_ARRAY a_values
- *  3. INTEGER_ARRAY b_keys
- *  4. DOUBLE_ARRAY b_values
- */
-
 double cosine_similarity(vector<int> a_keys, vector<double> a_values, vector<int> b_keys, vector<double> b_values) {
     int numbers_a = a_keys.back();
     int numbers_b = b_keys.back();
