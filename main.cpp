@@ -1,49 +1,3 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
-string ltrim(const string &);
-string rtrim(const string &);
-
-
-
-double cosine_dist(
-    std::vector<double> &vec_a,
-    std::vector<double> &vec_b,
-    size_t vec_size) {
-    double a_dot_b = 0.0;
-    double a_mag = 0;
-    double b_mag = 0;
-    for (size_t i = 0; i < vec_size; ++i)
-    {
-        a_dot_b += (vec_a[i]*vec_b[i]);
-        a_mag += (vec_a[i]*vec_a[i]);
-        b_mag += (vec_b[i]*vec_b[i]);
-    }
-    double dist = 1.0 - (a_dot_b / (sqrt(a_mag) * sqrt(b_mag)));
-    return dist;
-}
-
-double cosine_similarity(vector<int> a_keys, vector<double> a_values, vector<int> b_keys, vector<double> b_values) {
-    int numbers_a = a_keys.back();
-    int numbers_b = b_keys.back();
-    int max = numbers_a>numbers_b?numbers_a:numbers_b;
-    std::vector<double> vector1(max, 0.0);
-    std::vector<double> vector2(max, 0.0);
-    unsigned int a_vecSize = a_keys.size();
-    for(unsigned int i = 0; i < a_vecSize; i++) {
-    vector1[a_keys[i]] = a_values[i];
-    }
-    unsigned int b_vecSize = b_keys.size();
-    for(unsigned int i = 0; i < b_vecSize; i++) {
-    vector2[b_keys[i]] = b_values[i];
-    }
-    
-    return cosine_dist(vector1, vector2, max);
-    
-}
-
-
 int main()
 {
     ofstream fout(getenv("OUTPUT_PATH"));
@@ -113,33 +67,38 @@ int main()
         b_values[i] = b_values_item;
     }
 
-    double result = cosine_similarity(a_keys, a_values, b_keys, b_values);
+   double result = cosine_similarity(a_keys, a_values, b_keys, b_values);
+   cout << "Cosine similarity: " << result << endl;
 
-    fout << result << "\n";
-
-    fout.close();
-
-    return 0;
+   return 0;
 }
 
-string ltrim(const string &str) {
-    string s(str);
+double cosine_similarity(vector<int> a_keys, vector<double> a_values, vector<int> b_keys, vector<double> b_values) {
+   int numbers_a = *max_element(a_keys.begin(),a_keys.end());
+   int numbers_b = *max_element(b_keys.begin(),b_keys.end());
+   int max_num=numbers_a>numbers_b?numbers_a:numbers_b;
 
-    s.erase(
-        s.begin(),
-        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
-    );
+   std::vector<double> vector1(max_num+1);
+   std::vector<double> vector2(max_num+1);
+   
+   for(unsigned int i=0;i<a_vals.size();i++){
+       vector1[a_vals[i].first]=a_vals[i].second;
+   }
+   
+   for(unsigned int j=0;j<b_vals.size();j++){
+       vector2[b_vals[j].first]=b_vals[j].second;
+   }
+   
+   double dot_product=0.0,magnitude_a=0.0,magnitude_b=0.0;
 
-    return s;
-}
-
-string rtrim(const string &str) {
-    string s(str);
-
-    s.erase(
-        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
-        s.end()
-    );
-
-    return s;
+   for(int k=1;k<=max_num;k++){
+       dot_product+=vector1[k]*vector2[k];
+       magnitude_a+=pow(vector1[k],2);
+       magnitude_b+=pow(vector2[k],2);
+   }
+   
+   magnitude_a=sqrt(magnitude_a);
+   magnitude_b=sqrt(magnitude_b);
+   
+   return dot_product/(magnitude_a*magnitude_b);
 }
